@@ -32,12 +32,13 @@ def get_answer(guess, code):
 
 def print_history(history):
 	for i in range(len(history)):
-		print(' #{} {} - {}'.format(i + 1, ' | '.join(history[i][0]), history[i][1]))
+		print(' #{}    {}  -  correct={} misplaced={}'.format(i + 1, ' | '.join(history[i][0]), history[i][1][0], history[i][1][1]))
 
 def main():
 	history = []
 	code = get_random_code()
 	found = False
+	print('Make a guess by choosing 4 symbols from "{}"'.format(COLORS))
 	while not found:
 		guess = input('Make a guess: ')
 		if not input_is_sane(guess):
