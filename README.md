@@ -1,10 +1,18 @@
-# Mastermind
+Mastermind
+----------
 
 An implementation of the famous game Mastermind.
 
-## Run
+Each player can be either a human or a computer. The computer code breaker player implements the Five-guess algorithm defined by Donald Knuth (1977).
 
-This script requires Python 3. Run it by executing:
+#### Requirements
+
+- Python 3
+ 
+
+#### Run
+
+The game can be started with:
 
 ```python
 python3 mastermind.py
