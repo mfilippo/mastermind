@@ -30,7 +30,7 @@ class CodeMaker(ABC):
 
 class CodeBreaker(ABC):
     """
-    Abstract class defining the Code Maker behaviour.
+    Abstract class defining the Code Breaker behaviour.
     """
 
     @abstractmethod
@@ -162,7 +162,7 @@ def play_game(code_maker, code_breaker):
 
         if answer == (4, 0):
             print('[Code Breaker]: You broke the code!')
-            print('[Code Breaker]: The code was: {}'.format(code_maker.code))
+            print('[Code Breaker]: The code was: {}'.format(''.join(code_maker.code)))
             print('[Code Breaker]: Number of guesses: {}'.format(len(history)))
             break
 
@@ -267,10 +267,29 @@ def print_history(history):
     :param history: The list of the past guesses/answers
     :return: None
     """
+    print()
     print('|====|=========|====|')
     for i in range(len(history)):
         print('|{:>3} | {} | {}{} |'.format(i + 1, ' '.join(history[i][0]), history[i][1][0], history[i][1][1]))
     print('|====|=========|====|')
+    print()
+
+
+def get_player_type_from_user(label, options):
+    """
+    Read the player from the user.
+
+    :param label: the label of the player type
+    :param options: the possible type options
+    :return: the player type given by the user
+    """
+    while True:
+        print('>>> Choose {} player type [{}]:'.format(label, '|'.join(options)))
+        player_type = input('>>> ')
+        if player_type.lower() in options:
+            return player_type.lower()
+        else:
+            print('>>> Invalid type')
 
 
 def main():
@@ -279,11 +298,32 @@ def main():
 
     :return: None
     """
-    # TODO: Let user choose players type
-    # TODO: Add replay and exit options
-    code_maker = ComputerCodeMaker()
-    code_breaker = ComputerCodeBreaker()
-    play_game(code_maker, code_breaker)
+    print()
+    print('======================')
+    print('WELCOME TO MASTERMIND!')
+    print('======================')
+    print()
+    code_makers = {
+        'cpu': ComputerCodeMaker,
+        'human': HumanCodeMaker
+    }
+    code_breakers = {
+        'cpu': ComputerCodeBreaker,
+        'human': HumanCodeBreaker
+    }
+    while True:
+        code_maker_type = get_player_type_from_user(label='Code Maker', options=['cpu', 'human'])
+        code_breaker_type = get_player_type_from_user(label='Code Breaker', options=['cpu', 'human'])
+
+        code_maker = code_makers[code_maker_type]()
+        code_breaker = code_breakers[code_breaker_type]()
+
+        play_game(code_maker, code_breaker)
+
+        answer = input('>>> Game is over. Do you want to play again? [y|n]')
+        if answer.lower() not in ['y', 'yes']:
+            print('>>> Goodbye!')
+            break
 
 
 if __name__ == '__main__':
