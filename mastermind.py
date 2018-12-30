@@ -155,7 +155,7 @@ def play_game(code_maker, code_breaker):
     while True:
         print('[Code Maker]: Give an answer')
         answer = code_maker.answer(guess)
-        print('[Code Maker]: Answer is {}'.format(answer))
+        print('[Code Maker]: Answer is {}{}'.format(answer[0], answer[1]))
 
         history.append((guess, answer))
         print_history(history)
@@ -168,7 +168,7 @@ def play_game(code_maker, code_breaker):
 
         print('[Code Breaker]: Make a guess')
         guess = code_breaker.guess(answer)
-        print('[Code Breaker]: Guess is {}'.format(guess))
+        print('[Code Breaker]: Guess is {}'.format(''.join(guess)))
 
 
 def get_code_from_user():
@@ -298,32 +298,41 @@ def main():
 
     :return: None
     """
-    print()
-    print('======================')
-    print('WELCOME TO MASTERMIND!')
-    print('======================')
-    print()
-    code_makers = {
-        'cpu': ComputerCodeMaker,
-        'human': HumanCodeMaker
-    }
-    code_breakers = {
-        'cpu': ComputerCodeBreaker,
-        'human': HumanCodeBreaker
-    }
-    while True:
-        code_maker_type = get_player_type_from_user(label='Code Maker', options=['cpu', 'human'])
-        code_breaker_type = get_player_type_from_user(label='Code Breaker', options=['cpu', 'human'])
+    try:
+        print()
+        print('======================')
+        print('WELCOME TO MASTERMIND!')
+        print('======================')
+        print()
+        print('[Hint]: The code is any sequence of four letters between A-F, e.g. ABCF)')
+        print('[Hint]: The answer are two numbers, the number of correct letters in the right position '
+              'and the number of correct letters in the wrong position')
+        print()
+        code_makers = {
+            'cpu': ComputerCodeMaker,
+            'human': HumanCodeMaker
+        }
+        code_breakers = {
+            'cpu': ComputerCodeBreaker,
+            'human': HumanCodeBreaker
+        }
+        while True:
+            code_maker_type = get_player_type_from_user(label='Code Maker', options=['cpu', 'human'])
+            code_breaker_type = get_player_type_from_user(label='Code Breaker', options=['cpu', 'human'])
 
-        code_maker = code_makers[code_maker_type]()
-        code_breaker = code_breakers[code_breaker_type]()
+            code_maker = code_makers[code_maker_type]()
+            code_breaker = code_breakers[code_breaker_type]()
 
-        play_game(code_maker, code_breaker)
+            play_game(code_maker, code_breaker)
 
-        answer = input('>>> Game is over. Do you want to play again? [y|n]')
-        if answer.lower() not in ['y', 'yes']:
-            print('>>> Goodbye!')
-            break
+            answer = input('>>> Game is over. Do you want to play again? [y|n]')
+            if answer.lower() not in ['y', 'yes']:
+                print('>>> Goodbye!')
+                break
+
+    except KeyboardInterrupt:
+        print()
+        print('>>> Goodbye!')
 
 
 if __name__ == '__main__':
